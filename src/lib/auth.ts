@@ -2,7 +2,8 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { db } from "./db";
 
-const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECZreT } = process.env;
+const { NEXT_PUBLIC_ORIGIN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } =
+  process.env;
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {

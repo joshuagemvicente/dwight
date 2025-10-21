@@ -14,5 +14,127 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
+  id            String         @id @default(uuid())
+  name          String
+  email         String
+  emailVerified Boolean        @default(false)
+  image         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+  Vault         Vault[]
+  CreditBalance CreditBalance?
+  Transaction   Transaction[]
+  VaultVisit    VaultVisit[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@map("verification")
+}
+
+model Vault {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  price       Int      @default(0)
+  isPublic    Boolean  @default(false)
+  avgRating   Float    @default(0)
+  ownerId     String
+  owner       User     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ideas       Idea[]
+  Transaction Transaction[]
+}
+
+model Idea {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  tags        String[] // can be multiple tags
+  vaultId     String
+  vault       Vault    @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+}
+
+model CreditBalance {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Transaction {
+  id        String          @id @default(uuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  vaultId   String?
+  vault     Vault?          @relation(fields: [vaultId], references: [id], onDelete: Cascade)
+  type      TransactionType
+  amount    Int
+  createdAt DateTime        @default(now())
+}
+
+model VaultVisit {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  vaultId   String
+  createdAt DateTime @default(now())
+}
+
+enum TransactionType {
+  PURCHASE
+  DEPOSIT
+  REWARD
+  WITHDRAW
 }
