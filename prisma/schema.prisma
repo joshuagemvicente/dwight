@@ -132,6 +132,24 @@ model VaultVisit {
   createdAt DateTime @default(now())
 }
 
+model WaitlistEntry {
+  id String @id @default(cuid())
+
+  name  String?
+  email String
+
+  appSlug String
+
+  position Int @default(autoincrement())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([email, appSlug])
+  @@index([appSlug, position])
+  @@map("waitlist_entries")
+}
+
 enum TransactionType {
   PURCHASE
   DEPOSIT
