@@ -1,3 +1,4 @@
+import { WaitlistEntry } from "@/components/waitlist/waitlist-entry";
 import Image from "next/image";
 
 function Page() {
@@ -108,6 +109,7 @@ export function isWaitlistEnabled() {
 
 export default function Home() {
   const isWaitlist = isWaitlistEnabled();
+  console.log("isWaitlist:", isWaitlist);
 
   if (isWaitlist) {
     return <WaitlistEntry />;
