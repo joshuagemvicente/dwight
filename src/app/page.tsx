@@ -101,3 +101,17 @@ export default function Home() {
     </div>
   );
 }
+
+export function isWaitlistEnabled() {
+  return process.env.IS_WAITLIST_ENABLED === "true";
+}
+
+export default function Home() {
+  const isWaitlist = isWaitlistEnabled();
+
+  if (isWaitlist) {
+    return <WaitlistEntry />;
+  }
+
+  return <Page />;
+}
