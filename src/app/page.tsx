@@ -109,11 +109,10 @@ export function isWaitlistEnabled() {
 
 export default function Home() {
   const isWaitlist = isWaitlistEnabled();
-  console.log("isWaitlist:", isWaitlist);
-  
+
   if (isWaitlist) {
     return <WaitlistEntry />;
   }
-  
+
   return <Page />;
 }
