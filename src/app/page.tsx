@@ -1,6 +1,7 @@
+import { WaitlistEntry } from "@/components/waitlist/waitlist-entry";
 import Image from "next/image";
 
-export default function Home() {
+function Page() {
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -100,4 +101,19 @@ export default function Home() {
       </footer>
     </div>
   );
+}
+
+export function isWaitlistEnabled() {
+  return process.env.IS_WAITLIST_ENABLED === "true";
+}
+
+export default function Home() {
+  const isWaitlist = isWaitlistEnabled();
+  console.log("isWaitlist:", isWaitlist);
+  
+  if (isWaitlist) {
+    return <WaitlistEntry />;
+  }
+  
+  return <Page />;
 }
