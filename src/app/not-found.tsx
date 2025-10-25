@@ -1,7 +1,9 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function NotFound() {
+  const router = useRouter();
   return (
     <div className="min-h-screen flex flex-col justify-between items-center px-4 py-8">
       <div className="text-xl font-semibold">
@@ -19,7 +21,7 @@ export default function NotFound() {
             Try going{" "}
             <span
               className="underline cursor-pointer"
-              onClick={() => history.back()}
+              onClick={() => router.back()}
             >
               back
             </span>{" "}
