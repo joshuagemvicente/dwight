@@ -1,7 +1,5 @@
+import { LoginForm } from "@/components/forms/auth/login-form";
+
 export default () => {
-  return (
-    <div className="flex items-center">
-      <div>Login</div>
-    </div>
-  );
+  return <LoginForm />;
 };
