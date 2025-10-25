@@ -49,7 +49,7 @@ export function LoginForm() {
     }
   };
 
-  const renderOAuthButton = (item: (typeof oAuthProviders)[0]) => {
+  const renderOAuthButton = (item: OAuthProviderProps) => {
     const isLoading = loadingProvider === item.provider;
 
     return (
